@@ -7,6 +7,8 @@ const len = data.length;
 let result = [];
 
 for (let i = 1; i < len; ) {
+  // 防止表格底部出现多余空格，但要注意中间不要有空格哦～～
+  if (!data[i]?.length) break;
   const [l1, l2, l3, image_url, target_type, target_data] = data[i];
   // 找到1级菜单
   let item = {
@@ -53,16 +55,16 @@ for (let i = 1; i < len; ) {
 
     if (j + 1 > len || data[j + 1]?.[0] || data[j + 1]?.[1]) {
       item.children.push(item2);
+    } else if (!data[j + 1]?.length) {
+      item.children.push(item2);
+      break;
     }
   }
 
   result.push(item);
-
   i = j;
 }
 
-console.log(result);
-
-fs.writeFile("nav-mobile.json", JSON.stringify(result), "utf-8", () => {
+fs.writeFile("top-nav-mobile.json", JSON.stringify(result), "utf-8", () => {
   console.log("=========done=======");
 });
